@@ -1,7 +1,9 @@
 package com.example.pathfinder.Data.InterviewData;
 
 import com.example.pathfinder.Data.CompanyData.Company;
+import com.example.pathfinder.Data.JobData.Job;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +28,9 @@ public class Interview {
     @JoinColumn(name = "companyId")
     private Company company;
 
+    @ManyToOne
+    @JsonManagedReference("job-interviews")
+    @JoinColumn(name = "jobId")
+    private Job job;
 
 }

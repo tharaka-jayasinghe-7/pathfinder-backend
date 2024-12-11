@@ -2,6 +2,7 @@ package com.example.pathfinder.Data.JobData;
 
 import com.example.pathfinder.Data.ApplyData.Apply;
 import com.example.pathfinder.Data.CompanyData.Company;
+import com.example.pathfinder.Data.InterviewData.Interview;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,10 @@ public class Job {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("job-apply")
     private List<Apply> applies;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("job-interviews")
+    private List<Interview> interviews;
+
 
 }
