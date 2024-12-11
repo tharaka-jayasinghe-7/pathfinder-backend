@@ -1,4 +1,4 @@
-package com.example.pathfinder.Data.UserData;
+package com.example.pathfinder.Data.Interview;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,20 +14,11 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Interview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
-    private String firstName;
-    private String lastName;
-    private String profilePic;
-    private String address;
-    private Date dob;
-    private int olPassCount;
-    private String mobile;
-    private String email;
-    private String certification;
-    private String password;
-
+    private int interviewId;
+    private Date interviewDate;
+    private String description;
 }
