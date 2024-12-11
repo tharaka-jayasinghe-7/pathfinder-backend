@@ -2,6 +2,7 @@ package com.example.pathfinder.Data.InterviewData;
 
 import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.JobData.Job;
+import com.example.pathfinder.Data.UserData.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -36,6 +37,6 @@ public class Interview {
 
     //many interview has many user
     @ManyToMany(mappedBy = "interview", fetch = FetchType.LAZY)
-    private List<Company> companies;
+    private List<User> users;
 
 }
