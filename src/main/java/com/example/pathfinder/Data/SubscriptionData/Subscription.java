@@ -1,4 +1,4 @@
-package com.example.pathfinder.Data.AdminData;
+package com.example.pathfinder.Data.SubscriptionData;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,24 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin {
+public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private Date dob;
-    private String mobileNumber;
-    private String email;
-    private String password;
-    private String proflePic;
-
+    private String duration;
+    private double price;
+    private String features;
 }
