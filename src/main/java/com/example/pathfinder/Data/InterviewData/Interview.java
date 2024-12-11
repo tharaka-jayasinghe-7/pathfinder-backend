@@ -1,9 +1,8 @@
 package com.example.pathfinder.Data.InterviewData;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.pathfinder.Data.CompanyData.Company;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +19,11 @@ public class Interview {
     private int interviewId;
     private Date interviewDate;
     private String description;
+
+    //one interview has one company
+    @ManyToOne
+    @JsonBackReference("company-interviews")
+    @JoinColumn(name = "companyId")
+    private Company company;
+
 }

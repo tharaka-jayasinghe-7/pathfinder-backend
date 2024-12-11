@@ -1,9 +1,12 @@
 package com.example.pathfinder.Data.CompanyData;
 
+import com.example.pathfinder.Data.InterviewData.Interview;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,4 +27,10 @@ public class Company {
     private Date date;
     private String description;
     private String password;
+
+    //one company has many interviews
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("company-interviews")
+    private List<Interview> interviews;
+
 }
