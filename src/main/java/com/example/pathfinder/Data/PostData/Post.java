@@ -24,7 +24,6 @@ public class Post {
     private String type;
     private Date date;
 
-
     //one post add by one company
     @ManyToOne
     @JsonManagedReference("company-posts")

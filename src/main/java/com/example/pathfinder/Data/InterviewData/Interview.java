@@ -36,7 +36,7 @@ public class Interview {
     private Job job;
 
     //many interview has many user
-    @ManyToMany(mappedBy = "interview", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "interviews", fetch = FetchType.LAZY)
     private List<User> users;
 
 }
