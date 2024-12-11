@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,5 +33,9 @@ public class Interview {
     @JsonManagedReference("job-interviews")
     @JoinColumn(name = "jobId")
     private Job job;
+
+    //many interview has many user
+    @ManyToMany(mappedBy = "interview", fetch = FetchType.LAZY)
+    private List<Company> companies;
 
 }

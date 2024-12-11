@@ -34,4 +34,16 @@ public class User {
     @JsonManagedReference("user-apply")
     private List<Apply> applies;
 
+    //many user has many interviews
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_interview",
+            joinColumns = {
+                    @JoinColumn(name = "userId",referencedColumnName = "userId")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "interviewId", referencedColumnName = "interviewId")
+            }
+    )
+    private List<Interview> interviews;
+
 }
