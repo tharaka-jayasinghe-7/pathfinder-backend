@@ -1,4 +1,4 @@
-package com.example.pathfinder.Data.Interview;
+package com.example.pathfinder.Data.InterviewData;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

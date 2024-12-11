@@ -1,4 +1,4 @@
-package com.example.pathfinder.Data.Job;
+package com.example.pathfinder.Data.ApplyData;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,17 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Job {
+public class Apply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int jobId;
-    private String jobImage;
-    private String jobTitle;
-    private String jobDescription;
-    private String location;
-    private int reqOlPassCount;
-    private int workingHours;
-    private String Qualification;
-
+    private int applyId;
+    private String cv;
 }
