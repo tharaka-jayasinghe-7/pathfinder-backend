@@ -1,9 +1,10 @@
 package com.example.pathfinder.Data.ApplyData;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.pathfinder.Data.CompanyData.Company;
+import com.example.pathfinder.Data.JobData.Job;
+import com.example.pathfinder.Data.UserData.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,15 @@ public class Apply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int applyId;
     private String cv;
+
+    @ManyToOne
+    @JsonBackReference("user-apply")
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @ManyToOne
+    @JsonBackReference("job-apply")
+    @JoinColumn(name = "jobId")
+    private Job job;
+
 }

@@ -1,13 +1,14 @@
 package com.example.pathfinder.Data.UserData;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.pathfinder.Data.ApplyData.Apply;
+import com.example.pathfinder.Data.InterviewData.Interview;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,5 +29,9 @@ public class User {
     private String email;
     private String certification;
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-apply")
+    private List<Apply> applies;
 
 }
