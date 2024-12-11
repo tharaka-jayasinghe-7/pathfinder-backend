@@ -16,7 +16,7 @@ public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int subscriptionId;
     private String duration;
     private double price;
     private String features;
