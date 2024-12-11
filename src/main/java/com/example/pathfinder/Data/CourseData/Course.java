@@ -1,9 +1,9 @@
 package com.example.pathfinder.Data.CourseData;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.example.pathfinder.Data.AdminData.Admin;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,5 +29,11 @@ public class Course {
     private String nvqLevel;
     private String type;
     private String coursePic;
+
+    //one course added by one admin
+    @ManyToOne
+    @JsonBackReference("admin-courses")
+    @JoinColumn(name = "adminId")
+    private Admin admin;
 
 }

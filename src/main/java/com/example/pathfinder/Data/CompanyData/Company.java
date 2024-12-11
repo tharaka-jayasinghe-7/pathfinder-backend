@@ -1,9 +1,12 @@
 package com.example.pathfinder.Data.CompanyData;
 
 import com.example.pathfinder.Data.InterviewData.Interview;
+
 import com.example.pathfinder.Data.JobData.Job;
 import com.example.pathfinder.Data.PaymentData.Payment;
 import com.example.pathfinder.Data.PostData.Post;
+import com.example.pathfinder.Data.SubscriptionData.Subscription;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +39,7 @@ public class Company {
     @JsonManagedReference("company-interviews")
     private List<Interview> interviews;
 
+
     //one company add many jobs
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("company-jobs")
@@ -50,5 +54,12 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("company-payments")
     private List<Payment> payments;
+
+    //one company has one subscription
+    @ManyToOne
+    @JsonBackReference("subscription-companies")
+    @JoinColumn(name = "subscriptionId")
+    private Subscription subscription;
+
 
 }
