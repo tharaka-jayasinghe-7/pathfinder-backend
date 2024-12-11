@@ -1,5 +1,7 @@
 package com.example.pathfinder.Data.PaymentData;
 
+import com.example.pathfinder.Data.CompanyData.Company;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,5 +23,12 @@ public class Payment {
     private String billingAddress;
     private String email;
     private String phone;
+
+
+    //one payment add by one company
+    @ManyToOne
+    @JsonManagedReference("company-payments")
+    @JoinColumn(name = "companyId")
+    private Company company;
 
 }

@@ -26,4 +26,5 @@ public class Interview {
     @JoinColumn(name = "companyId")
     private Company company;
 
+
 }

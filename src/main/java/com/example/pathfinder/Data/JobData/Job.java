@@ -1,9 +1,8 @@
 package com.example.pathfinder.Data.JobData;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.pathfinder.Data.CompanyData.Company;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +23,12 @@ public class Job {
     private int reqOlPassCount;
     private int workingHours;
     private String Qualification;
+
+
+    //one job add by one company
+    @ManyToOne
+    @JsonManagedReference("company-jobs")
+    @JoinColumn(name = "companyId")
+    private Company company;
 
 }
