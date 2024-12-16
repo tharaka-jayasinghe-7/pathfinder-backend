@@ -7,6 +7,9 @@ import com.example.pathfinder.Data.JobData.JobRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class JobService {
 
@@ -17,8 +20,19 @@ public class JobService {
     CompanyRepo companyRepo;
 
     public Job addJob(Job job, int companyId) {
-        Company company = companyRepo.findById(companyId).get();
-        job.setCompany(company);
+        Company company = companyRepo.findById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
         return jobRepo.save(job);
+    }
+
+    public Optional<Job> getJobById(int id) {
+        return jobRepo.findById(id);
+    }
+
+    public List<Job> getJobs() {
+        return jobRepo.findAll();
+    }
+
+    public void deleteJob(int jobId) {
+        jobRepo.deleteById(jobId);
     }
 }

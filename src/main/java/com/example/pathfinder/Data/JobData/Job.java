@@ -1,11 +1,15 @@
 package com.example.pathfinder.Data.JobData;
 
 import com.example.pathfinder.Data.ApplyData.Apply;
+import com.example.pathfinder.Data.BlobSerializer.BlobSerializer;
 import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.InterviewData.Interview;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
+
+import java.sql.Blob;
 import java.util.List;
 
 @Entity
@@ -14,13 +18,16 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int jobId;
-    private String jobImage;
     private String jobTitle;
     private String jobDescription;
     private String location;
     private int reqOlPassCount;
     private int workingHours;
     private String Qualification;
+
+    @Lob
+    @JsonSerialize(using = BlobSerializer.class)
+    private Blob jobImage;
 
     //one job add by one company
     @ManyToOne
@@ -44,11 +51,11 @@ public class Job {
         this.jobId = jobId;
     }
 
-    public String getJobImage() {
+    public Blob getJobImage() {
         return jobImage;
     }
 
-    public void setJobImage(String jobImage) {
+    public void setJobImage(Blob jobImage) {
         this.jobImage = jobImage;
     }
 
