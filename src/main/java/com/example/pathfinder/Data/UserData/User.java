@@ -1,11 +1,12 @@
 package com.example.pathfinder.Data.UserData;
 
 import com.example.pathfinder.Data.ApplyData.Apply;
+import com.example.pathfinder.Data.BlobSerializer.BlobSerializer;
 import com.example.pathfinder.Data.InterviewData.Interview;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ public class User {
     private String password;
     //image data
     @Lob
+    @JsonSerialize(using = BlobSerializer.class)
     private Blob image;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
