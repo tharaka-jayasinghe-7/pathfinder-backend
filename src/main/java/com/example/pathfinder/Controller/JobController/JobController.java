@@ -26,8 +26,6 @@ public class JobController {
 
     @Autowired
     private JobService jobService;
-    @Autowired
-    private CompanyRepo companyRepo;
 
     @PostMapping("/company/{companyId}/addJob")
     public ResponseEntity<Job> addJob(
