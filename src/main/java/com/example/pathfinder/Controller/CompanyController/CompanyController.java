@@ -96,7 +96,7 @@ public class CompanyController {
 
     //Build Company GetById REST API
     @GetMapping("{email}")
-    public ResponseEntity<Company> getCompanyById (@PathVariable String email){
+    public ResponseEntity<Company> getCompanyByEmail (@PathVariable String email){
         Optional<Company> company = companyService.getCompanyByEmail(email);
 
         if(company.isPresent()){

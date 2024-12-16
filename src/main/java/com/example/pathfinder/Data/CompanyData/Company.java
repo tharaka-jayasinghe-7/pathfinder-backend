@@ -23,24 +23,12 @@ public class Company {
 
     private String companyName;
 
-    // Change profilePic to a Blob similar to the image field in User class
     @Lob
     private Blob image;
-
 
     private String address;
     private String url;
     private String industry;
-
-    public Blob getImage() {
-        return image;
-    }
-
-    public void setImage(Blob image) {
-        this.image = image;
-    }
-
-
     private String email;
     private String mobile;
 
@@ -51,19 +39,20 @@ public class Company {
     private String password;
 
     // One company has many interviews
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("company-interviews")
     private List<Interview> interviews;
 
     // One company can have many jobs
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("company-jobs")
     private List<Job> jobs;
 
     // One company can have many posts
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("company-posts")
-    private List<Post> posts;
+    // Bi-directional relationship with Payment
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonBackReference("company-posts")  // Add this annotation to avoid recursion
+    private List<Post> posts;  // Replace 'Post' with your actual entity type
 
     // One company can have many payments
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -71,12 +60,12 @@ public class Company {
     private List<Payment> payments;
 
     // One company has one subscription
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("subscription-companies")
-    @JoinColumn(name = "subscriptionId")
+    @JoinColumn(name = "subscriptionId", nullable = true)
     private Subscription subscription;
 
-    // Getters and Setters for all fields
+    // Getters and Setters
     public int getCompanyId() {
         return companyId;
     }
@@ -93,7 +82,13 @@ public class Company {
         this.companyName = companyName;
     }
 
+    public Blob getImage() {
+        return image;
+    }
 
+    public void setImage(Blob image) {
+        this.image = image;
+    }
 
     public String getAddress() {
         return address;
