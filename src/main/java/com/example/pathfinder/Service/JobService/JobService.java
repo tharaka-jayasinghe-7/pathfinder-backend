@@ -21,6 +21,7 @@ public class JobService {
 
     public Job addJob(Job job, int companyId) {
         Company company = companyRepo.findById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
+        job.setCompany(company);
         return jobRepo.save(job);
     }
 
