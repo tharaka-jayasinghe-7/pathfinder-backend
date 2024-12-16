@@ -14,22 +14,22 @@ public class CompanyService {
     @Autowired
     private CompanyRepo companyRepo;
 
-    // Method to add a company
+
     public Company addCompany(Company company) {
         return companyRepo.save(company);
     }
 
-    // Method to get all companies
+
     public List<Company> getAllCompanies() {
         return companyRepo.findAll();
     }
 
-    // Method to get a company by its ID
+
     public Optional<Company> getCompanyById(int companyId) {
-        return companyRepo.findById(companyId); // findById returns an Optional
+        return companyRepo.findById(companyId);
     }
 
-    // Method to update a company
+
     public Company updateCompany(int companyId, Company companyDetails) {
         Optional<Company> existingCompany = companyRepo.findById(companyId);
         if (existingCompany.isPresent()) {
@@ -59,6 +59,14 @@ public class CompanyService {
             return "Company deleted successfully.";
         }
         return "Company not found.";
+    }
+
+    public Optional<Company> getCompanyByEmail(String email){
+        return companyRepo.findByEmail(email);
+    }
+
+    public Optional<Company> getCompanyByName(String companyName){
+        return companyRepo.findByCompanyName(companyName);
     }
 
 

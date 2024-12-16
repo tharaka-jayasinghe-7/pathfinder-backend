@@ -94,5 +94,30 @@ public class CompanyController {
         }
     }
 
+    //Build Company GetById REST API
+    @GetMapping("{email}")
+    public ResponseEntity<Company> getCompanyById (@PathVariable String email){
+        Optional<Company> company = companyService.getCompanyByEmail(email);
+
+        if(company.isPresent()){
+            return new ResponseEntity<>(company.get(), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //Build Company GetByName REST API
+    @GetMapping("/getcompanybyname/{companyName}")
+    public ResponseEntity<Company> getCompanyByName(@PathVariable String companyName) {
+        Optional<Company> company = companyService.getCompanyByName(companyName);
+
+        if (company.isPresent()) {
+            return new ResponseEntity<>(company.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
 }

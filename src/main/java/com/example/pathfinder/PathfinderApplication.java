@@ -12,8 +12,5 @@ public class PathfinderApplication {
 		SpringApplication.run(PathfinderApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
+
 }
