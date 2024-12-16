@@ -41,4 +41,7 @@ public class Job {
     @JsonManagedReference("job-interviews")
     private List<Interview> interviews;
 
+
+
 }
+
