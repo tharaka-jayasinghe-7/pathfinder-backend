@@ -2,8 +2,8 @@ package com.example.pathfinder.Data.CompanyData;
 
 import com.example.pathfinder.Data.InterviewData.Interview;
 import com.example.pathfinder.Data.JobData.Job;
-import com.example.pathfinder.Data.PostData.Post;
 import com.example.pathfinder.Data.PaymentData.Payment;
+import com.example.pathfinder.Data.PostData.Post;
 import com.example.pathfinder.Data.SubscriptionData.Subscription;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -51,13 +51,14 @@ public class Company {
     // One company can have many posts
     // Bi-directional relationship with Payment
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonBackReference("company-posts")  // Add this annotation to avoid recursion
+    @JsonManagedReference("company-posts")  // Add this annotation to avoid recursion
     private List<Post> posts;  // Replace 'Post' with your actual entity type
 
     // One company can have many payments
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("company-payments")
     private List<Payment> payments;
+
 
     // One company has one subscription
     @ManyToOne(fetch = FetchType.LAZY)

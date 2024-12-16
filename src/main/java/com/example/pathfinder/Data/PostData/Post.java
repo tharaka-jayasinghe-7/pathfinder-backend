@@ -1,11 +1,15 @@
 package com.example.pathfinder.Data.PostData;
 
+import com.example.pathfinder.Data.BlobSerializer.BlobSerializer;
 import com.example.pathfinder.Data.CompanyData.Company;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Blob;
 import java.util.Date;
@@ -21,13 +25,15 @@ public class Post {
     private String title;
     private String content;
     @Lob
+    @JsonSerialize(using = BlobSerializer.class)
     private Blob image;
     private String type;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")  // Specify the date format
     private Date date;
 
     //one post add by one company
     @ManyToOne
-    @JsonManagedReference("company-posts")
+    @JsonBackReference("company-posts")
     @JoinColumn(name = "companyId")
     private Company company;
 

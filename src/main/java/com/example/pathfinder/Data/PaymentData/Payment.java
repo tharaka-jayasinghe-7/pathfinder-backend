@@ -27,9 +27,12 @@ public class Payment {
 
     // One payment is made by one company (ManyToOne relationship)
     @ManyToOne
-    @JsonManagedReference("company-payments")
+    @JsonBackReference("company-payments")
     @JoinColumn(name = "companyId")
     private Company company;
+
+
+
     public int getPaymentId() {
         return paymentId;
     }
