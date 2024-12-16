@@ -46,4 +46,34 @@ public class CourseController {
         List<Course> courses = courseService.getAllCourses();
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
+
+    @PutMapping("/updatecourse/{courseId}")
+    public ResponseEntity<Course> updateCourse(
+            @PathVariable int courseId,
+            @ModelAttribute Course course,
+            @RequestParam("profilePic") MultipartFile file) throws IOException, SQLException {
+
+        byte[] bytes = file.getBytes();
+        Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+        course.setImage(blob);
+
+        Course updatedCourse = courseService.updateCourse(courseId, course);
+
+        if (updatedCourse != null) {
+            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/deletecourse/{courseId}")
+    public ResponseEntity<String> deleteCourseById(@PathVariable int courseId) {
+        String message = courseService.deleteCourseById(courseId);
+
+        if (message.equals("Course deleted successfully.")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
 }
