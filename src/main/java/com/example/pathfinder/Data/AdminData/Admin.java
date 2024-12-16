@@ -1,12 +1,8 @@
 package com.example.pathfinder.Data.AdminData;
 
-import com.example.pathfinder.Data.CourseData.Course;
-import com.example.pathfinder.Data.SubscriptionData.Subscription;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.sql.Blob;
 import java.util.Date;
@@ -95,22 +91,6 @@ public class Admin {
     }
 
 
-    public List<Subscription> getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(List<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
     public Blob getImage() {
         return image;
     }
@@ -119,13 +99,7 @@ public class Admin {
         this.image = image;
     }
 
-    //one admin add many subscriptions
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("admin-subscriptions")
-    private List<Subscription> subscriptions;
 
-    //one admin add many courses
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("admin-courses")
-    private List<Course> courses;
+
+
 }
