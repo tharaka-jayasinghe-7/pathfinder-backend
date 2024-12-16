@@ -1,12 +1,8 @@
 package com.example.pathfinder.Data.AdminData;
 
-import com.example.pathfinder.Data.CourseData.Course;
-import com.example.pathfinder.Data.SubscriptionData.Subscription;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 
 import java.sql.Blob;
@@ -94,6 +90,7 @@ public class Admin {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
     public Blob getImage() {
         return image;
