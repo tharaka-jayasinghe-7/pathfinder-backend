@@ -4,6 +4,7 @@ package com.example.pathfinder.Data.AdminData;
 import jakarta.persistence.*;
 
 
+
 import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Admin {
     private String mobileNumber;
     private String email;
     private String password;
-
+    @Lob
     private Blob image;
 
 
@@ -98,8 +99,6 @@ public class Admin {
     public void setImage(Blob image) {
         this.image = image;
     }
-
-
 
 
 }

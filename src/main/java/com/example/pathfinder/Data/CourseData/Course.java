@@ -26,6 +26,8 @@ public class Course {
     private String type;
     private String coursePic;
 
+
+
     public int getCourseId() {
         return courseId;
     }
@@ -122,10 +124,5 @@ public class Course {
         this.coursePic = coursePic;
     }
 
-
-
-
-
-    //one course added by one admin
 
 }

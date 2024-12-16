@@ -1,6 +1,7 @@
 package com.example.pathfinder.Data.PostData;
 
 import com.example.pathfinder.Data.CompanyData.Company;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class Post {
 
     //one post add by one company
     @ManyToOne
-    @JsonManagedReference("company-posts")
+    @JsonBackReference("company-posts")
     @JoinColumn(name = "companyId")
     private Company company;
 

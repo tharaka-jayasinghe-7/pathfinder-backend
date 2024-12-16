@@ -17,4 +17,5 @@ public class Subscription {
     private double price;
     private String features;
 
+
 }
