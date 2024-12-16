@@ -51,7 +51,7 @@ public class Company {
     // One company can have many posts
     // Bi-directional relationship with Payment
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonBackReference("company-posts")  // Add this annotation to avoid recursion
+    @JsonManagedReference("company-posts")  // Add this annotation to avoid recursion
     private List<Post> posts;  // Replace 'Post' with your actual entity type
 
     // One company can have many payments
