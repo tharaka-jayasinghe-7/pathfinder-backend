@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Blob;
+
 @Entity
 public class Course {
 
@@ -24,7 +26,8 @@ public class Course {
     private String duration;
     private String nvqLevel;
     private String type;
-    private String coursePic;
+    @Lob
+    private Blob image;
 
 
 
@@ -116,13 +119,11 @@ public class Course {
         this.type = type;
     }
 
-    public String getCoursePic() {
-        return coursePic;
+    public Blob getImage() {
+        return image;
     }
 
-    public void setCoursePic(String coursePic) {
-        this.coursePic = coursePic;
+    public void setImage(Blob image) {
+        this.image = image;
     }
-
-
 }
