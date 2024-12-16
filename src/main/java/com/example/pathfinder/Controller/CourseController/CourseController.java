@@ -22,8 +22,10 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+
+
     @PostMapping("/addcourse")
-    public ResponseEntity<Course> addCompany(@ModelAttribute Course course, @RequestParam("profilePic") MultipartFile file)
+    public ResponseEntity<Course> addCourse(@ModelAttribute Course course, @RequestParam("profilePic") MultipartFile file)
             throws IOException, SQLException {
 
         byte[] bytes = file.getBytes();
