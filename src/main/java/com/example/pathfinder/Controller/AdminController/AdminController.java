@@ -40,7 +40,7 @@ public class AdminController {
     }
     //Build Admin GetById REST API
     @GetMapping("{email}")
-    public ResponseEntity<Admin> getCompanyByEmail (@PathVariable String email){
+    public ResponseEntity<Admin> getaAdminByEmail (@PathVariable String email){
         Optional<Admin> admin = adminService.getAdminByEmail(email);
 
         if(admin.isPresent()){
