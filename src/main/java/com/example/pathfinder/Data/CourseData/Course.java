@@ -29,10 +29,4 @@ public class Course {
     private String type;
     private String coursePic;
 
-    //one course added by one admin
-    @ManyToOne
-    @JsonBackReference("admin-courses")
-    @JoinColumn(name = "adminId")
-    private Admin admin;
-
 }

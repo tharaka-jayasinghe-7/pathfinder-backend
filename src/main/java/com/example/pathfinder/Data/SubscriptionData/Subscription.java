@@ -30,9 +30,4 @@ public class Subscription {
     @JsonManagedReference("subscription-companies")
     private List<Company> companies;
 
-    //one subscription added by one admin
-    @ManyToOne
-    @JsonBackReference("admin-subscriptions")
-    @JoinColumn(name = "adminId")
-    private Admin admin;
 }
