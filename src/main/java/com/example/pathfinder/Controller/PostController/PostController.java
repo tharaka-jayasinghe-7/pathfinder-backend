@@ -32,11 +32,11 @@ public class PostController {
             @RequestParam("image") MultipartFile file,
             @PathVariable int companyId) throws IOException, SQLException {
 
-        // Convert the uploaded file to a byte array and create a Blob
+       
         byte[] bytes = file.getBytes();
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
 
-        // Create a new Post object and set its fields
+
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
@@ -44,10 +44,10 @@ public class PostController {
         post.setDate(date);
         post.setImage(blob);
 
-        // Save the post using the service layer
+
         Post savedPost = postService.addPost(post, companyId);
 
-        // Return the saved post object with a 201 (Created) status
+
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
 
@@ -71,4 +71,36 @@ public class PostController {
     public void deletePost(@PathVariable int postId){
         postService.deletePost(postId);
     }
+
+    @PutMapping("/company/{companyId}/updatepost/{postId}")
+    public ResponseEntity<Post> updatePost(
+            @PathVariable int postId,
+            @PathVariable int companyId,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("type") String type,
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+            @RequestParam(value = "image", required = false) MultipartFile file) throws IOException, SQLException {
+
+        Blob blob = null;
+        if (file != null && !file.isEmpty()) {
+            byte[] bytes = file.getBytes();
+            blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+        }
+
+        Post updatedPost = new Post();
+        updatedPost.setTitle(title);
+        updatedPost.setContent(content);
+        updatedPost.setType(type);
+        updatedPost.setDate(date);
+        if (blob != null) {
+            updatedPost.setImage(blob);
+        }
+
+        Post savedPost = postService.updatePost(postId, companyId, updatedPost);
+
+        return new ResponseEntity<>(savedPost, HttpStatus.OK);
+    }
+
+
 }

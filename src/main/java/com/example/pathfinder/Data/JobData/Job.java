@@ -3,6 +3,7 @@ package com.example.pathfinder.Data.JobData;
 import com.example.pathfinder.Data.ApplyData.Apply;
 import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.InterviewData.Interview;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class Job {
 
     //one job add by one company
     @ManyToOne
-    @JsonManagedReference("company-jobs")
+    @JsonBackReference("company-jobs")
     @JoinColumn(name = "companyId")
     private Company company;
 

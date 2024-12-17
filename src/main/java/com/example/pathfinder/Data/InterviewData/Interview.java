@@ -31,7 +31,7 @@ public class Interview {
     private Company company;
 
     @ManyToOne
-    @JsonManagedReference("job-interviews")
+    @JsonBackReference("job-interviews")
     @JoinColumn(name = "jobId")
     private Job job;
 

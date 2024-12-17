@@ -36,4 +36,26 @@ public class PostService {
     public void deletePost(int postId){
         postRepo.deleteById(postId);
     }
+
+    public Post updatePost(int postId, int companyId, Post updatedPost) {
+        Post existingPost = postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with ID: " + postId));
+
+
+        Company company = companyRepo.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found with ID: " + companyId));
+
+        existingPost.setTitle(updatedPost.getTitle());
+        existingPost.setContent(updatedPost.getContent());
+        existingPost.setType(updatedPost.getType());
+        existingPost.setDate(updatedPost.getDate());
+        existingPost.setCompany(company);
+
+        if (updatedPost.getImage() != null) {
+            existingPost.setImage(updatedPost.getImage());
+        }
+
+        return postRepo.save(existingPost);
+    }
+
 }
