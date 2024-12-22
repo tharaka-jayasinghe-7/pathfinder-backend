@@ -32,7 +32,6 @@ public class PostController {
             @RequestParam("image") MultipartFile file,
             @PathVariable int companyId) throws IOException, SQLException {
 
-       
         byte[] bytes = file.getBytes();
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
 
