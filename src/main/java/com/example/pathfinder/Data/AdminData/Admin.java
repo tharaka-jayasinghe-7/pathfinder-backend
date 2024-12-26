@@ -31,13 +31,5 @@ public class Admin {
     private String profilePic;
 
 
-    //one admin add many subscriptions
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("admin-subscriptions")
-    private List<Subscription> subscriptions;
 
-    //one admin add many courses
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("admin-courses")
-    private List<Course> courses;
 }
