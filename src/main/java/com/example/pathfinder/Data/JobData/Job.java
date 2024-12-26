@@ -30,7 +30,7 @@ public class Job {
     private Blob jobImage;
 
     //one job add by one company
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("company-jobs")
     @JoinColumn(name = "companyId")
     private Company company;

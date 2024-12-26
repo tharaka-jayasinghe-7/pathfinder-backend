@@ -63,12 +63,17 @@ public class JobController {
     public ResponseEntity<Job> getJobById(@PathVariable int jobId) {
         Optional<Job> job = jobService.getJobById(jobId);
 
-        if(job.isPresent()) {
-            return new ResponseEntity<>(job.get(), HttpStatus.OK);
-        }
-        else
+        if (job.isPresent()) {
+            // Ensure the company is fetched, if lazy loading is being used
+            Job jobDetails = job.get();
+            jobDetails.getCompany(); // Access the company to ensure it is loaded
+
+            return new ResponseEntity<>(jobDetails, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @GetMapping("/getJobs")
     public List<Job> getAllJobs() {
@@ -80,4 +85,22 @@ public class JobController {
     public void deleteJob(@PathVariable int jobId) {
         jobService.deleteJob(jobId);
     }
+
+    @GetMapping("/{jobId}/image")
+    public ResponseEntity<byte[]> getImageByJobId(@PathVariable int jobId) {
+        Optional<Job> job = jobService.getJobById(jobId);
+
+        if (job.isPresent()) {
+            try {
+                Blob blob = job.get().getJobImage(); // Assuming this returns a Blob
+                byte[] image = blob.getBytes(1, (int) blob.length()); // Convert Blob to byte[]
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            } catch (SQLException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Handle SQL exceptions
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
