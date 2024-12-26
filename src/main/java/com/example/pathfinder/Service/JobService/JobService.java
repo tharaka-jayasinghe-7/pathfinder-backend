@@ -4,6 +4,7 @@ import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.CompanyData.CompanyRepo;
 import com.example.pathfinder.Data.JobData.Job;
 import com.example.pathfinder.Data.JobData.JobRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,12 @@ public class JobService {
         return jobRepo.save(job);
     }
 
+    @Transactional
     public Optional<Job> getJobById(int id) {
         return jobRepo.findById(id);
     }
 
+    @Transactional
     public List<Job> getJobs() {
         return jobRepo.findAll();
     }

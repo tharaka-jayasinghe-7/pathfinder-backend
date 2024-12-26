@@ -3,6 +3,7 @@ package com.example.pathfinder.Controller.JobController;
 import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.CompanyData.CompanyRepo;
 import com.example.pathfinder.Data.JobData.Job;
+import com.example.pathfinder.Data.JobData.JobDTO;
 import com.example.pathfinder.Data.UserData.User;
 import com.example.pathfinder.Service.CompanyService.CompanyService;
 import com.example.pathfinder.Service.JobService.JobService;
@@ -60,15 +61,27 @@ public class JobController {
     }
 
     @GetMapping("/getJob/{jobId}")
-    public ResponseEntity<Job> getJobById(@PathVariable int jobId) {
+    public ResponseEntity<JobDTO> getJobById(@PathVariable int jobId) {
         Optional<Job> job = jobService.getJobById(jobId);
 
-        if(job.isPresent()) {
-            return new ResponseEntity<>(job.get(), HttpStatus.OK);
-        }
-        else
+        if (job.isPresent()) {
+            Job jobDetails = job.get();
+            JobDTO jobDTO = new JobDTO();
+            jobDTO.setJobId(jobDetails.getJobId());
+            jobDTO.setJobTitle(jobDetails.getJobTitle());
+            jobDTO.setJobDescription(jobDetails.getJobDescription());
+            jobDTO.setLocation(jobDetails.getLocation());
+            jobDTO.setReqOlPassCount(jobDetails.getReqOlPassCount());
+            jobDTO.setWorkingHours(jobDetails.getWorkingHours());
+            jobDTO.setQualification(jobDetails.getQualification());
+            jobDTO.setCompanyId(jobDetails.getCompany().getCompanyId());  // Set the companyId here
+
+            return new ResponseEntity<>(jobDTO, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @GetMapping("/getJobs")
     public List<Job> getAllJobs() {
@@ -80,4 +93,22 @@ public class JobController {
     public void deleteJob(@PathVariable int jobId) {
         jobService.deleteJob(jobId);
     }
+
+    @GetMapping("/{jobId}/image")
+    public ResponseEntity<byte[]> getImageByJobId(@PathVariable int jobId) {
+        Optional<Job> job = jobService.getJobById(jobId);
+
+        if (job.isPresent()) {
+            try {
+                Blob blob = job.get().getJobImage(); // Assuming this returns a Blob
+                byte[] image = blob.getBytes(1, (int) blob.length()); // Convert Blob to byte[]
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            } catch (SQLException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Handle SQL exceptions
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
