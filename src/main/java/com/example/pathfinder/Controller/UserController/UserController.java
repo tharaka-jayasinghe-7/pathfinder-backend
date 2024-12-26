@@ -60,19 +60,8 @@ public class UserController {
     }
 
     @PostMapping("/userLogin")
-    public ResponseEntity<Object> userLogin(@RequestBody User loginUser) {
-        try {
-            User user = userService.authenticateUser(loginUser.getEmail(), loginUser.getPassword());
-
-            if(user == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect Email or Password");
-            }
-            UserResponse response = new UserResponse(user.getUserId(),user.getEmail());
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
-        }
+    public UserResponse login(@RequestParam String email, @RequestParam String password) {
+        return userService.loginUser(email, password);
     }
 
     @DeleteMapping("/deleteUser/{userId}")
