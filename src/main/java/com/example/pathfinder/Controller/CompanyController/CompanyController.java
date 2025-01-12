@@ -1,6 +1,7 @@
 package com.example.pathfinder.Controller.CompanyController;
 
 import com.example.pathfinder.Data.CompanyData.Company;
+import com.example.pathfinder.Data.CompanyData.CompanyResponse;
 import com.example.pathfinder.Service.CompanyService.CompanyService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class CompanyController {
     }
 
     // Build Company GetById REST API
-    @GetMapping("/getcompany/{companyId}")
+    @GetMapping("/{companyId}")
     public ResponseEntity<Company> getCompanyById(@PathVariable int companyId) {
         Optional<Company> company = companyService.getCompanyById(companyId);
 
@@ -96,12 +97,12 @@ public class CompanyController {
 
     //Build Company GetById REST API
     @GetMapping("{email}")
-    public ResponseEntity<Company> getCompanyByEmail (@PathVariable String email){
+    public ResponseEntity<Company> getCompanyByEmail(@PathVariable String email) {
         Optional<Company> company = companyService.getCompanyByEmail(email);
 
-        if(company.isPresent()){
+        if (company.isPresent()) {
             return new ResponseEntity<>(company.get(), HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -118,4 +119,20 @@ public class CompanyController {
         }
     }
 
+    @PostMapping("/companyLogin")
+    public ResponseEntity<String> companyLogin(@RequestBody Company loginCompany) {
+        try {
+            Company company = companyService.authenticateCompany(loginCompany.getEmail(), loginCompany.getPassword());
+
+            if (company == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect Email or Password");
+            }
+            CompanyResponse response = new CompanyResponse(company.getCompanyId(), company.getEmail());
+            return ResponseEntity.ok("Company logged in Successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
+        }
+
+
+    }
 }
