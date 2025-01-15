@@ -30,7 +30,7 @@ public class SubscriptionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Subscription>> getAllSubscriptions() {
         List<Subscription> subscriptions = subscriptionService.getAllSubscription();
         return new ResponseEntity<>(subscriptions, HttpStatus.OK);

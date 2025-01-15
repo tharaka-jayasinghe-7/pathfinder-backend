@@ -23,7 +23,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("company/{companyId}/addpost")
+    @PostMapping("company/{companyId}/addPost")
     public ResponseEntity<Post> addPost(
             @RequestParam("title") String title,
             @RequestParam("content") String content,
@@ -50,7 +50,7 @@ public class PostController {
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getpost/{postId}")
+    @GetMapping("/getPost/{postId}")
     public ResponseEntity<Post> getPostById (@PathVariable int postId){
         Optional<Post> post = postService.getPostById(postId);
 
@@ -60,18 +60,18 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("getposts")
+    @GetMapping("getPosts")
     public List<Post> getAllPost(){
         List<Post> posts = postService.getPosts();
         return posts;
     }
 
-    @DeleteMapping("/deletepost/{postId}")
+    @DeleteMapping("/deletePost/{postId}")
     public void deletePost(@PathVariable int postId){
         postService.deletePost(postId);
     }
 
-    @PutMapping("/company/{companyId}/updatepost/{postId}")
+    @PutMapping("/company/{companyId}/updatePost/{postId}")
     public ResponseEntity<Post> updatePost(
             @PathVariable int postId,
             @PathVariable int companyId,
