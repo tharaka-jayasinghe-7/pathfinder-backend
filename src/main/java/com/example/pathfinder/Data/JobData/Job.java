@@ -8,8 +8,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Blob;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,6 +26,8 @@ public class Job {
     private int reqOlPassCount;
     private int workingHours;
     private String Qualification;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date jobDate;
 
     @Lob
     @JsonSerialize(using = BlobSerializer.class)
@@ -121,6 +125,14 @@ public class Job {
 
     public void setApplies(List<Apply> applies) {
         this.applies = applies;
+    }
+
+    public Date getJobDate() {
+        return jobDate;
+    }
+
+    public void setJobDate(Date jobDate) {
+        this.jobDate = jobDate;
     }
 
     public List<Interview> getInterviews() {

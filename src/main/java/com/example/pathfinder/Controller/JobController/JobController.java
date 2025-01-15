@@ -74,6 +74,7 @@ public class JobController {
             jobDTO.setReqOlPassCount(jobDetails.getReqOlPassCount());
             jobDTO.setWorkingHours(jobDetails.getWorkingHours());
             jobDTO.setQualification(jobDetails.getQualification());
+            jobDTO.setJobDate(jobDetails.getJobDate());
             jobDTO.setCompanyId(jobDetails.getCompany().getCompanyId());  // Set the companyId here
 
             return new ResponseEntity<>(jobDTO, HttpStatus.OK);

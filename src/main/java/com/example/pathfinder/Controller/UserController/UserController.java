@@ -1,5 +1,6 @@
 package com.example.pathfinder.Controller.UserController;
 
+import com.example.pathfinder.Data.JobData.Job;
 import com.example.pathfinder.Data.UserData.User;
 import com.example.pathfinder.Data.UserData.UserResponse;
 import com.example.pathfinder.Service.UserService.UserService;
@@ -67,6 +68,23 @@ public class UserController {
     @DeleteMapping("/deleteUser/{userId}")
     public void deleteUser(@PathVariable int userId) {
         userService.deleteUser(userId);
+    }
+
+    @GetMapping("/{userId}/image")
+    public ResponseEntity<byte[]> getImageByJobId(@PathVariable int userId) {
+        Optional<User> user = userService.getUserById(userId);
+
+        if (user.isPresent()) {
+            try {
+                Blob blob = user.get().getImage(); // Assuming this returns a Blob
+                byte[] image = blob.getBytes(1, (int) blob.length()); // Convert Blob to byte[]
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            } catch (SQLException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Handle SQL exceptions
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

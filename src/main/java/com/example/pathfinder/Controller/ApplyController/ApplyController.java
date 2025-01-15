@@ -1,6 +1,7 @@
 package com.example.pathfinder.Controller.ApplyController;
 
 import com.example.pathfinder.Data.ApplyData.Apply;
+import com.example.pathfinder.Data.ApplyData.ApplyDTO;
 import com.example.pathfinder.Service.ApplyService.ApplyService;
 import com.example.pathfinder.Service.JobService.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,15 @@ public class ApplyController {
     public void deleteApply(@PathVariable int applyId) {
         applyService.deleteApply(applyId);
     }
+
+    @GetMapping("/getAppliesByUser/{userId}")
+    public ResponseEntity<List<ApplyDTO>> getAppliesByUser(@PathVariable int userId) {
+        List<ApplyDTO> applies = applyService.getAppliesByUserId(userId);
+        if (applies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(applies, HttpStatus.OK);
+    }
+
 
 }
