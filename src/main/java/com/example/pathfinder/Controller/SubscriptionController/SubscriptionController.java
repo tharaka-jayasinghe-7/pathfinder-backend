@@ -17,7 +17,7 @@ public class SubscriptionController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    @PostMapping("/addsubscription")
+    @PostMapping("/addSubscription")
     public ResponseEntity<Subscription> addSubscription(@RequestBody Subscription subscription) {
         Subscription savedSubscription = subscriptionService.addSubscription(subscription);
         return new ResponseEntity<>(savedSubscription, HttpStatus.CREATED);
@@ -36,7 +36,7 @@ public class SubscriptionController {
         return new ResponseEntity<>(subscriptions, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{subscriptionId}")
+    @DeleteMapping("/deleteSubscription/{subscriptionId}")
     public ResponseEntity<Void> deleteSubscription(@PathVariable int subscriptionId) {
         subscriptionService.deleteSubscription(subscriptionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

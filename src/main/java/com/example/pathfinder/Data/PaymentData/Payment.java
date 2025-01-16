@@ -19,6 +19,7 @@ public class Payment {
 
     private double amount;
     private String paymentMethod;
+
     private String cardNumber;
     private Integer code;
     private String billingAddress;

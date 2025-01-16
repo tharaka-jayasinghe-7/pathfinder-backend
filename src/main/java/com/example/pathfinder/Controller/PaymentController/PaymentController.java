@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
@@ -18,7 +18,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
 
-    @PostMapping("/company/{companyId}/addpayment")
+    @PostMapping("/company/{companyId}/addPayment")
     public ResponseEntity<Payment> addPayment(
             @PathVariable int companyId,
             @RequestBody Payment payment) {
@@ -27,7 +27,7 @@ public class PaymentController {
     }
 
 
-    @PutMapping("/company/{companyId}/updatepayment/{paymentId}")
+    @PutMapping("/company/{companyId}/updatePayment/{paymentId}")
     public ResponseEntity<Payment> updatePayment(
             @PathVariable int paymentId,
             @PathVariable int companyId,
@@ -37,7 +37,7 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/getpayment/{paymentId}")
+    @GetMapping("/getPayment/{paymentId}")
     public ResponseEntity<Payment> getPaymentById(@PathVariable int paymentId) {
         Optional<Payment> payment = paymentService.getPaymentById(paymentId);
         return payment.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -45,14 +45,14 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/getpayments")
+    @GetMapping("/getPayments")
     public ResponseEntity<List<Payment>> getAllPayments() {
         List<Payment> payments = paymentService.getAllPayments();
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/deletepayment/{paymentId}")
+    @DeleteMapping("/deletePayment/{paymentId}")
     public ResponseEntity<Void> deletePayment(@PathVariable int paymentId) {
         paymentService.deletePayment(paymentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
