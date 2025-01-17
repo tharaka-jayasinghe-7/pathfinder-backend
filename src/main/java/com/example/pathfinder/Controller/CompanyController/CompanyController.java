@@ -123,6 +123,24 @@ public class CompanyController {
         }
     }
 
+    @GetMapping("/{companyId}/image")
+    public ResponseEntity<byte[]> getImageByCompanyId(@PathVariable int companyId){
+        Optional<Company> company = companyService.getCompanyById(companyId);
+
+        if(company.isPresent()){
+            try{
+                Blob blob = company.get().getImage();
+                byte[] image = blob.getBytes(1,(int) blob.length());
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            }catch (SQLException e){
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }
 
 

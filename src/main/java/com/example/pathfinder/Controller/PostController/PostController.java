@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/post")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
 
     @Autowired
@@ -101,5 +102,9 @@ public class PostController {
         return new ResponseEntity<>(savedPost, HttpStatus.OK);
     }
 
-
+     @GetMapping("/getPostByCompany/{companyId}")
+    public ResponseEntity<List<Post>> getPostsByCompany(@PathVariable int companyId){
+        List<Post> posts = postService.getPostsByCompanyId(companyId);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+     }
 }

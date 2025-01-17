@@ -4,6 +4,7 @@ import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.CompanyData.CompanyRepo;
 import com.example.pathfinder.Data.PostData.Post;
 import com.example.pathfinder.Data.PostData.PostRepo;
+import com.example.pathfinder.Service.CompanyService.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class PostService {
 
     @Autowired
     private CompanyRepo companyRepo;
+
+    @Autowired
+    private CompanyService companyService;
 
     public Post addPost(Post post, int companyId){
         Company company = companyRepo.findById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
@@ -56,6 +60,10 @@ public class PostService {
         }
 
         return postRepo.save(existingPost);
+    }
+
+    public List<Post> getPostsByCompanyId(int companyId){
+        return postRepo.findByCompany_CompanyId(companyId);
     }
 
 }
