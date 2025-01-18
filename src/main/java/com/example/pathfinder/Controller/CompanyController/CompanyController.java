@@ -43,7 +43,7 @@ public class CompanyController {
 
 
 
-    @GetMapping("/getCompany/{id}")
+    @GetMapping("/getcompany/{id}")
     public ResponseEntity<Company> getCompanyById(@PathVariable("id") int companyId) {
         Optional<Company> company = companyService.getCompanyById(companyId);
 
@@ -54,16 +54,11 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Company> getCompanyByEmail(@PathVariable String email) {
-        Optional<Company> company = companyService.getCompanyByEmail(email);
-
-        if (company.isPresent()) {
-            return new ResponseEntity<>(company.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/email/{email}")    public Company getCompanyByEmail(@PathVariable String email) {
+        return companyService.getCompanyByEmail(email);
     }
+
+
 
     @GetMapping("/getCompanyByName/{companyName}")
     public ResponseEntity<Company> getCompanyByName(@PathVariable String companyName) {
@@ -106,22 +101,28 @@ public class CompanyController {
         }
     }
 
+//    @PostMapping("/companyLogin")
+//    public ResponseEntity<?> companyLogin(@RequestBody Company loginCompany) {
+//        try {
+//            Company company = companyService.authenticateCompany(loginCompany.getEmail(), loginCompany.getPassword());
+//
+//            if (company == null) {
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect Email or Password");
+//            }
+//
+//            // Create a CompanyResponse with companyId and email
+//            CompanyResponse response = new CompanyResponse(company.getCompanyId(), company.getEmail());
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
+//        }
+//    }
+
     @PostMapping("/companyLogin")
-    public ResponseEntity<?> companyLogin(@RequestBody Company loginCompany) {
-        try {
-            Company company = companyService.authenticateCompany(loginCompany.getEmail(), loginCompany.getPassword());
-
-            if (company == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect Email or Password");
-            }
-
-            // Create a CompanyResponse with companyId and email
-            CompanyResponse response = new CompanyResponse(company.getCompanyId(), company.getEmail());
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
-        }
+    public CompanyResponse login(@RequestParam String email, @RequestParam String password) {
+        return companyService.loginCompany(email, password);
     }
+
 
     @GetMapping("/{companyId}/image")
     public ResponseEntity<byte[]> getImageByCompanyId(@PathVariable int companyId){
