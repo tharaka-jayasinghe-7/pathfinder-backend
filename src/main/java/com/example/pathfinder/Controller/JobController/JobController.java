@@ -112,4 +112,10 @@ public class JobController {
         }
     }
 
+    @GetMapping("/getJobsByCompany/{companyId}")
+    public ResponseEntity<List<Job>> getJobsByCompany(@PathVariable int companyId){
+        List<Job> jobs = jobService.getJobsByCompanyId(companyId);
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
 }
