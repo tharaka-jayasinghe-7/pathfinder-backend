@@ -1,35 +1,40 @@
 package com.example.pathfinder.Data.JobData;
 
 import com.example.pathfinder.Data.ApplyData.Apply;
+import com.example.pathfinder.Data.BlobSerializer.BlobSerializer;
 import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.InterviewData.Interview;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Blob;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int jobId;
-    private String jobImage;
     private String jobTitle;
     private String jobDescription;
     private String location;
     private int reqOlPassCount;
     private int workingHours;
     private String Qualification;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date jobDate;
+
+    @Lob
+    @JsonSerialize(using = BlobSerializer.class)
+    private Blob jobImage;
 
     //one job add by one company
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("company-jobs")
     @JoinColumn(name = "companyId")
     private Company company;
@@ -42,7 +47,99 @@ public class Job {
     @JsonManagedReference("job-interviews")
     private List<Interview> interviews;
 
+    public int getJobId() {
+        return jobId;
+    }
 
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
 
+    public Blob getJobImage() {
+        return jobImage;
+    }
+
+    public void setJobImage(Blob jobImage) {
+        this.jobImage = jobImage;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getJobDescription() {
+        return jobDescription;
+    }
+
+    public void setJobDescription(String jobDescription) {
+        this.jobDescription = jobDescription;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getReqOlPassCount() {
+        return reqOlPassCount;
+    }
+
+    public void setReqOlPassCount(int reqOlPassCount) {
+        this.reqOlPassCount = reqOlPassCount;
+    }
+
+    public int getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(int workingHours) {
+        this.workingHours = workingHours;
+    }
+
+    public String getQualification() {
+        return Qualification;
+    }
+
+    public void setQualification(String qualification) {
+        Qualification = qualification;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<Apply> getApplies() {
+        return applies;
+    }
+
+    public void setApplies(List<Apply> applies) {
+        this.applies = applies;
+    }
+
+    public Date getJobDate() {
+        return jobDate;
+    }
+
+    public void setJobDate(Date jobDate) {
+        this.jobDate = jobDate;
+    }
+
+    public List<Interview> getInterviews() {
+        return interviews;
+    }
+
+    public void setInterviews(List<Interview> interviews) {
+        this.interviews = interviews;
+    }
 }
-

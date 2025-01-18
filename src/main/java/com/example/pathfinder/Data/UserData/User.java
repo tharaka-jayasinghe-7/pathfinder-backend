@@ -46,6 +46,7 @@ public class User {
                     @JoinColumn(name = "interviewId", referencedColumnName = "interviewId")
             }
     )
+    @JsonManagedReference
     private List<Interview> interviews;
 
     public int getUserId() {
