@@ -1,5 +1,9 @@
 package com.example.pathfinder.Data.JobData;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 public class JobDTO {
     private int jobId;
     private String jobTitle;
@@ -9,9 +13,19 @@ public class JobDTO {
     private int workingHours;
     private String qualification;
     private int companyId;  // Add companyId here
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date jobDate;
 
     public int getJobId() {
         return jobId;
+    }
+
+    public Date getJobDate() {
+        return jobDate;
+    }
+
+    public void setJobDate(Date jobDate) {
+        this.jobDate = jobDate;
     }
 
     public void setJobId(int jobId) {

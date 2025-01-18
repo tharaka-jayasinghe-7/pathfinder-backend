@@ -3,6 +3,7 @@ package com.example.pathfinder.Controller.PostController;
 import com.example.pathfinder.Data.PostData.Post;
 import com.example.pathfinder.Service.PostService.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,23 +26,33 @@ public class PostController {
     private PostService postService;
 
     // Add Post
-    @PostMapping("/addpost/{companyId}")
+    @PostMapping("/company/{companyId}/addPost")
     public ResponseEntity<Post> addPost(
-            @ModelAttribute Post post,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("type") String type,
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
             @RequestParam("image") MultipartFile file,
             @PathVariable int companyId) throws IOException, SQLException {
 
-        // Convert the MultipartFile to a Blob
         byte[] bytes = file.getBytes();
-        Blob blob = new SerialBlob(bytes);  // Use SerialBlob to convert the byte array into a Blob
+        Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
 
-        // Set the image field to the Blob
+
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
+        post.setType(type);
+        post.setDate(date);
         post.setImage(blob);
 
-        // Add the company to the post and save it
+
         Post savedPost = postService.addPost(post, companyId);
+
+
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
+
 
     // Get All Posts
     @GetMapping("/getallposts")

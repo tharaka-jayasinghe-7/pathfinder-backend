@@ -1,6 +1,9 @@
 package com.example.pathfinder.Controller.InterviewController;
 
 import com.example.pathfinder.Data.InterviewData.Interview;
+import com.example.pathfinder.Data.InterviewData.InterviewNotificationDTO;
+import com.example.pathfinder.Data.InterviewData.InterviewRepo;
+import com.example.pathfinder.Data.UserData.UserRepo;
 import com.example.pathfinder.Service.InterviewService.InterviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/interview")
@@ -21,6 +25,11 @@ public class InterviewController {
 
     @Autowired
     InterviewService interviewService;
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private InterviewRepo interviewRepo;
 
     @PostMapping("/company/{companyId}/job/{jobId}/addInterview")
     public ResponseEntity<Interview> addInterview(
@@ -59,4 +68,26 @@ public class InterviewController {
         return interview.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/getNotificationsByUser/{userId}")
+    public ResponseEntity<List<InterviewNotificationDTO>> getNotificationsByUser(@PathVariable int userId) {
+        // Call the repository method with userId
+        List<Interview> interviews = interviewRepo.findInterviewsWithCompanyAndJobByUserId(userId);
+
+        if (interviews.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        // Map Interview entities to InterviewNotificationDTO
+        List<InterviewNotificationDTO> notifications = interviews.stream()
+                .map(interview -> new InterviewNotificationDTO(
+                        interview.getInterviewId(),
+                        interview.getInterviewDate().toString(),  // Convert Date to String if needed
+                        interview.getDescription(),
+                        interview.getCompany().getCompanyName(),
+                        interview.getJob().getJobTitle()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(notifications);
+    }
 }
