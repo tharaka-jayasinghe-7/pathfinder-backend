@@ -1,15 +1,20 @@
 package com.example.pathfinder.Data.AdminData;
 
-
+import com.example.pathfinder.Data.CourseData.Course;
+import com.example.pathfinder.Data.SubscriptionData.Subscription;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-
-import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name ="admin")
 public class Admin {
 
@@ -23,9 +28,7 @@ public class Admin {
     private String mobileNumber;
     private String email;
     private String password;
-    @Lob
-    private Blob image;
-
+    private String profilePic;
 
     public int getAdminId() {
         return adminId;
@@ -91,14 +94,11 @@ public class Admin {
         this.password = password;
     }
 
-
-    public Blob getImage() {
-        return image;
+    public String getProfilePic() {
+        return profilePic;
     }
 
-    public void setImage(Blob image) {
-        this.image = image;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
-
-
 }

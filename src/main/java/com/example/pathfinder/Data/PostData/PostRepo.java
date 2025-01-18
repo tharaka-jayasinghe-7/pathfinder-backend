@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepo extends JpaRepository<Post, Integer> {
-    Optional<Post> findById(int postId);
-    List<Post> findByCompany_CompanyId(int companyId); // To find posts by company ID
+
+    List<Post> findByCompany_CompanyId(int companyId);
+
 }

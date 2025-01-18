@@ -19,6 +19,7 @@ public class Payment {
 
     private double amount;
     private String paymentMethod;
+
     private String cardNumber;
     private Integer code;
     private String billingAddress;
@@ -30,6 +31,9 @@ public class Payment {
     @JsonBackReference("company-payments")
     @JoinColumn(name = "companyId")
     private Company company;
+
+
+
     public int getPaymentId() {
         return paymentId;
     }

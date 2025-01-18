@@ -69,5 +69,15 @@ public class CompanyService {
         return companyRepo.findByCompanyName(companyName);
     }
 
+    public Company authenticateCompany(String email, String password) {
+        Optional<Company> optionalCompany = companyRepo.findByEmail(email);
+        if (optionalCompany.isPresent()) {
+            Company company = optionalCompany.get();
+            if (company.getPassword().equals(password)) {
+                return company;
+            }
+        }
+        return null;
+    }
 
 }

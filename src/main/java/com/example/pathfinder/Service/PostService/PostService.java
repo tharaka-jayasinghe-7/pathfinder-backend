@@ -1,8 +1,9 @@
 package com.example.pathfinder.Service.PostService;
 
+import com.example.pathfinder.Data.CompanyData.Company;
+import com.example.pathfinder.Data.CompanyData.CompanyRepo;
 import com.example.pathfinder.Data.PostData.Post;
 import com.example.pathfinder.Data.PostData.PostRepo;
-import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Service.CompanyService.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,56 +18,52 @@ public class PostService {
     private PostRepo postRepo;
 
     @Autowired
+    private CompanyRepo companyRepo;
+
+    @Autowired
     private CompanyService companyService;
 
-    // Add Post
-    public Post addPost(Post post, int companyId) {
-        Optional<Company> company = companyService.getCompanyById(companyId);
-        if (company.isPresent()) {
-            post.setCompany(company.get());
-            return postRepo.save(post);
-        }
-        throw new RuntimeException("Company not found.");
+    public Post addPost(Post post, int companyId){
+        Company company = companyRepo.findById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
+        post.setCompany(company);
+        return postRepo.save(post);
     }
 
-    // Get All Posts
-    public List<Post> getAllPosts() {
+    public Optional<Post> getPostById(int id) {
+        return postRepo.findById(id);
+    }
+
+    public List<Post> getPosts(){
         return postRepo.findAll();
     }
 
-    // Get Post by ID
-    public Optional<Post> getPostById(int postId) {
-        return postRepo.findById(postId);
+    public void deletePost(int postId){
+        postRepo.deleteById(postId);
     }
 
-    // Update Post
-    public Post updatePost(int postId, Post postDetails) {
-        Optional<Post> existingPost = postRepo.findById(postId);
-        if (existingPost.isPresent()) {
-            Post updatedPost = existingPost.get();
-            updatedPost.setTitle(postDetails.getTitle());
-            updatedPost.setContent(postDetails.getContent());
-            updatedPost.setImage(postDetails.getImage());
-            updatedPost.setType(postDetails.getType());
-            updatedPost.setDate(postDetails.getDate());
-            updatedPost.setCompany(postDetails.getCompany());
-            return postRepo.save(updatedPost);
+    public Post updatePost(int postId, int companyId, Post updatedPost) {
+        Post existingPost = postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with ID: " + postId));
+
+
+        Company company = companyRepo.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found with ID: " + companyId));
+
+        existingPost.setTitle(updatedPost.getTitle());
+        existingPost.setContent(updatedPost.getContent());
+        existingPost.setType(updatedPost.getType());
+        existingPost.setDate(updatedPost.getDate());
+        existingPost.setCompany(company);
+
+        if (updatedPost.getImage() != null) {
+            existingPost.setImage(updatedPost.getImage());
         }
-        return null; // Or throw an exception
+
+        return postRepo.save(existingPost);
     }
 
-    // Delete Post
-    public String deletePostById(int postId) {
-        Optional<Post> existingPost = postRepo.findById(postId);
-        if (existingPost.isPresent()) {
-            postRepo.delete(existingPost.get());
-            return "Post deleted successfully.";
-        }
-        return "Post not found.";
-    }
-
-    // Get Posts by Company ID
-    public List<Post> getPostsByCompanyId(int companyId) {
+    public List<Post> getPostsByCompanyId(int companyId){
         return postRepo.findByCompany_CompanyId(companyId);
     }
+
 }

@@ -9,22 +9,52 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/payments")
+@RequestMapping("/payment")
 public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
 
-    // Endpoint to add a payment with companyId in the URL
+
     @PostMapping("/company/{companyId}/addPayment")
-    public ResponseEntity<Payment> addPayment(@PathVariable int companyId, @RequestBody Payment payment) {
+    public ResponseEntity<Payment> addPayment(
+            @PathVariable int companyId,
+            @RequestBody Payment payment) {
+        Payment savedPayment = paymentService.addPayment(payment, companyId);
+        return new ResponseEntity<>(savedPayment, HttpStatus.CREATED);
+    }
 
 
-        // Call the service to add the payment
-        Payment createdPayment = paymentService.addPayment(companyId, payment);
+    @PutMapping("/company/{companyId}/updatePayment/{paymentId}")
+    public ResponseEntity<Payment> updatePayment(
+            @PathVariable int paymentId,
+            @PathVariable int companyId,
+            @RequestBody Payment payment) {
+        Payment updatedPayment = paymentService.updatePayment(paymentId, companyId, payment);
+        return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
+    }
 
-        return ResponseEntity.ok(createdPayment);
+
+    @GetMapping("/getPayment/{paymentId}")
+    public ResponseEntity<Payment> getPaymentById(@PathVariable int paymentId) {
+        Optional<Payment> payment = paymentService.getPaymentById(paymentId);
+        return payment.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    @GetMapping("/getPayments")
+    public ResponseEntity<List<Payment>> getAllPayments() {
+        List<Payment> payments = paymentService.getAllPayments();
+        return new ResponseEntity<>(payments, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/deletePayment/{paymentId}")
+    public ResponseEntity<Void> deletePayment(@PathVariable int paymentId) {
+        paymentService.deletePayment(paymentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

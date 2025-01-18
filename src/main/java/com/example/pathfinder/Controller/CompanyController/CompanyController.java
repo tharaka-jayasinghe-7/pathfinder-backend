@@ -1,6 +1,7 @@
 package com.example.pathfinder.Controller.CompanyController;
 
 import com.example.pathfinder.Data.CompanyData.Company;
+import com.example.pathfinder.Data.CompanyData.CompanyResponse;
 import com.example.pathfinder.Service.CompanyService.CompanyService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,35 +24,28 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    // Build Company Create REST API
-    @PostMapping("/addcompany")
+    @PostMapping("/addCompany")
     public ResponseEntity<Company> addCompany(@ModelAttribute Company company, @RequestParam("profilePic") MultipartFile file)
             throws IOException, SQLException {
-
         byte[] bytes = file.getBytes();
-
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
         company.setImage(blob);
 
-
         Company savedCompany = companyService.addCompany(company);
-
-
         return new ResponseEntity<>(savedCompany, HttpStatus.CREATED);
     }
 
-    // Build Company GetAll REST API
-    @GetMapping("/getcompanies")
+    @GetMapping
     public ResponseEntity<List<Company>> getAllCompanies() {
         List<Company> companies = companyService.getAllCompanies();
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
-    // Build Company GetById REST API
-    @GetMapping("/getcompany/{companyId}")
-    public ResponseEntity<Company> getCompanyById(@PathVariable int companyId) {
-        Optional<Company> company = companyService.getCompanyById(companyId);
 
+
+    @GetMapping("/getCompany/{id}")
+    public ResponseEntity<Company> getCompanyById(@PathVariable("id") int companyId) {
+        Optional<Company> company = companyService.getCompanyById(companyId);
 
         if (company.isPresent()) {
             return new ResponseEntity<>(company.get(), HttpStatus.OK);
@@ -60,14 +54,34 @@ public class CompanyController {
         }
     }
 
-    // Build Company Update REST API
-    @PutMapping("/updatecompany/{companyId}")
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Company> getCompanyByEmail(@PathVariable String email) {
+        Optional<Company> company = companyService.getCompanyByEmail(email);
+
+        if (company.isPresent()) {
+            return new ResponseEntity<>(company.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/getCompanyByName/{companyName}")
+    public ResponseEntity<Company> getCompanyByName(@PathVariable String companyName) {
+        Optional<Company> company = companyService.getCompanyByName(companyName);
+
+        if (company.isPresent()) {
+            return new ResponseEntity<>(company.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/updateCompany/{companyId}")
     public ResponseEntity<Company> updateCompany(
             @PathVariable int companyId,
             @ModelAttribute Company company,
             @RequestParam("profilePic") MultipartFile file) throws IOException, SQLException {
 
-        // Process the file (same as in addCompany)
         byte[] bytes = file.getBytes();
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
         company.setImage(blob);
@@ -81,9 +95,7 @@ public class CompanyController {
         }
     }
 
-
-    // Build Company Delete REST API
-    @DeleteMapping("/deletecompany/{companyId}")
+    @DeleteMapping("/deleteCompany/{companyId}")
     public ResponseEntity<String> deleteCompanyById(@PathVariable int companyId) {
         String message = companyService.deleteCompanyById(companyId);
 
@@ -94,30 +106,41 @@ public class CompanyController {
         }
     }
 
-    //Build Company GetById REST API
-    @GetMapping("{email}")
-    public ResponseEntity<Company> getCompanyByEmail (@PathVariable String email){
-        Optional<Company> company = companyService.getCompanyByEmail(email);
+    @PostMapping("/companyLogin")
+    public ResponseEntity<?> companyLogin(@RequestBody Company loginCompany) {
+        try {
+            Company company = companyService.authenticateCompany(loginCompany.getEmail(), loginCompany.getPassword());
+
+            if (company == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect Email or Password");
+            }
+
+            // Create a CompanyResponse with companyId and email
+            CompanyResponse response = new CompanyResponse(company.getCompanyId(), company.getEmail());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
+        }
+    }
+
+    @GetMapping("/{companyId}/image")
+    public ResponseEntity<byte[]> getImageByCompanyId(@PathVariable int companyId){
+        Optional<Company> company = companyService.getCompanyById(companyId);
 
         if(company.isPresent()){
-            return new ResponseEntity<>(company.get(), HttpStatus.OK);
+            try{
+                Blob blob = company.get().getImage();
+                byte[] image = blob.getBytes(1,(int) blob.length());
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            }catch (SQLException e){
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    //Build Company GetByName REST API
-    @GetMapping("/getcompanybyname/{companyName}")
-    public ResponseEntity<Company> getCompanyByName(@PathVariable String companyName) {
-        Optional<Company> company = companyService.getCompanyByName(companyName);
-
-        if (company.isPresent()) {
-            return new ResponseEntity<>(company.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
 
 }
+
+
