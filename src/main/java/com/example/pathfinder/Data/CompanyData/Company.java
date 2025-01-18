@@ -56,7 +56,7 @@ public class Company {
 
     // One company can have many payments
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("company-payments")
+    @JsonManagedReference("company-payments")  // Managed reference for company
     private List<Payment> payments;
 
 
