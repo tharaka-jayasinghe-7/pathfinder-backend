@@ -1,6 +1,8 @@
 package com.example.pathfinder.Controller.PostController;
 
 import com.example.pathfinder.Data.PostData.Post;
+import com.example.pathfinder.Data.PostData.PostDTO;
+import com.example.pathfinder.Data.PostData.PostRepo;
 import com.example.pathfinder.Service.PostService.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/post")
@@ -23,6 +26,8 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private PostRepo postRepo;
 
     @PostMapping("company/{companyId}/addPost")
     public ResponseEntity<Post> addPost(
@@ -107,4 +112,28 @@ public class PostController {
         List<Post> posts = postService.getPostsByCompanyId(companyId);
         return new ResponseEntity<>(posts, HttpStatus.OK);
      }
+
+    @GetMapping("/getPostsForUser")
+    public List<PostDTO> getPostsForUser() {
+        return postService.getPostsForUser(); // Return DTOs with companyId included
+    }
+
+    @GetMapping("/{postId}/image")
+    public ResponseEntity<byte[]> getImageByPostId(@PathVariable int postId) {
+        Optional<Post> post = postService.getPostById(postId);
+
+        if (post.isPresent()) {
+            try {
+                Blob blob = post.get().getImage(); // Assuming this returns a Blob
+                byte[] image = blob.getBytes(1, (int) blob.length()); // Convert Blob to byte[]
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            } catch (SQLException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Handle SQL exceptions
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

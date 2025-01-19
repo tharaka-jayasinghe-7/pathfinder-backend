@@ -7,6 +7,5 @@ import java.util.List;
 
 @Repository
 public interface JobRepo extends JpaRepository<Job, Integer> {
-
-    List<Job> findByCompany_CompanyId(int companyId);
+    List<Job> findByCompanyCompanyId(int companyId);
 }

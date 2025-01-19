@@ -112,6 +112,20 @@ public class JobController {
         }
     }
 
+    @GetMapping("/company/{companyId}/jobs")
+    public ResponseEntity<List<Job>> getJobsByCompanyId(@PathVariable int companyId) {
+        // Fetch jobs by companyId
+        List<Job> jobs = jobService.getJobsByCompanyId(companyId);
+
+        // Check if jobs are found
+        if (jobs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Return 204 if no jobs found
+        }
+
+        return new ResponseEntity<>(jobs, HttpStatus.OK); // Return 200 with jobs list
+    }
+
+
     @GetMapping("/getJobsByCompany/{companyId}")
     public ResponseEntity<List<Job>> getJobsByCompany(@PathVariable int companyId){
         List<Job> jobs = jobService.getJobsByCompanyId(companyId);

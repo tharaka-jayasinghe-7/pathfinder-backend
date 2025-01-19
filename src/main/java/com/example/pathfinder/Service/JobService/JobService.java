@@ -40,8 +40,9 @@ public class JobService {
         jobRepo.deleteById(jobId);
     }
 
-
-    public List<Job> getJobsByCompanyId(int companyId){
-        return jobRepo.findByCompany_CompanyId(companyId);
+    public List<Job> getJobsByCompanyId(int companyId) {
+        // Fetch jobs for the given companyId from the repository
+        return jobRepo.findByCompanyCompanyId(companyId);
     }
+
 }

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/course")
@@ -76,4 +77,22 @@ public class CourseController {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/{courseId}/image")
+    public ResponseEntity<byte[]> getImageByCourseId(@PathVariable int courseId) {
+        Optional<Course> course = courseService.getCourseById(courseId);
+
+        if (course.isPresent()) {
+            try {
+                Blob blob = course.get().getImage(); // Assuming this returns a Blob
+                byte[] image = blob.getBytes(1, (int) blob.length()); // Convert Blob to byte[]
+                return new ResponseEntity<>(image, HttpStatus.OK);
+            } catch (SQLException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Handle SQL exceptions
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Return 404 if course not found
+        }
+    }
+
 }

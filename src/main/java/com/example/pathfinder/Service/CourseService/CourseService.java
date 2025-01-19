@@ -54,4 +54,8 @@ public class CourseService {
         }
         return "Course not found.";
     }
+
+    public Optional<Course> getCourseById(int courseId) {
+        return courseRepo.findById(courseId); // Use repository method to find the course by ID
+    }
 }
