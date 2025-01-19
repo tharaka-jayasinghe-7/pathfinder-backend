@@ -69,5 +69,11 @@ public class ApplyController {
         return new ResponseEntity<>(applies, HttpStatus.OK);
     }
 
+    @GetMapping("/getApplyByJob/{jobId}")
+    public ResponseEntity<List<Apply>> getApplyByJob(@PathVariable int jobId){
+        List<Apply> applyList = applyService.getApplyByJobId(jobId);
+        return new ResponseEntity<>(applyList, HttpStatus.OK);
+    }
+
 
 }

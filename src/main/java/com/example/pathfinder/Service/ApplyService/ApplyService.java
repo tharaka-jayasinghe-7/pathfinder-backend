@@ -52,4 +52,8 @@ public class ApplyService {
                 .map(apply -> new ApplyDTO(apply.getApplyId(), apply.getJob().getJobId()))
                 .collect(Collectors.toList());
     }
+
+    public List<Apply> getApplyByJobId(int jobId){
+        return applyRepo.findByJob_JobId(jobId);
+    }
 }

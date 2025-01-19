@@ -2,8 +2,11 @@ package com.example.pathfinder.Service.CompanyService;
 
 import com.example.pathfinder.Data.CompanyData.Company;
 import com.example.pathfinder.Data.CompanyData.CompanyRepo;
+import com.example.pathfinder.Data.CompanyData.CompanyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +64,7 @@ public class CompanyService {
         return "Company not found.";
     }
 
-    public Optional<Company> getCompanyByEmail(String email){
+    public  Company getCompanyByEmail(String email){
         return companyRepo.findByEmail(email);
     }
 
@@ -69,15 +72,31 @@ public class CompanyService {
         return companyRepo.findByCompanyName(companyName);
     }
 
-    public Company authenticateCompany(String email, String password) {
-        Optional<Company> optionalCompany = companyRepo.findByEmail(email);
-        if (optionalCompany.isPresent()) {
-            Company company = optionalCompany.get();
-            if (company.getPassword().equals(password)) {
-                return company;
-            }
-        }
-        return null;
-    }
+//    public Company authenticateCompany(String email, String password) {
+//        Optional<Company> optionalCompany = companyRepo.findByEmail(email);
+//        if (optionalCompany.isPresent()) {
+//            Company company = optionalCompany.get();
+//            if (company.getPassword().equals(password)) {
+//                return company;
+//            }
+//        }
+//        return null;
+//    }
 
+    public CompanyResponse loginCompany(String email, String password) {
+        // Retrieve company by email
+        Company company = companyRepo.findByEmail(email);
+
+        // Check if the company exists and the password matches
+        if (company != null && company.getPassword().equals(password)) {
+            // Return a response with email and companyId
+            return new CompanyResponse(company.getCompanyId(), company.getEmail());
+        } else {
+            // Throw a 401 Unauthorized error when login fails
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        }
+    }
 }
+
+
+
