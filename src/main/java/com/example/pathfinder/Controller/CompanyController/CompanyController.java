@@ -43,7 +43,7 @@ public class CompanyController {
 
 
 
-    @GetMapping("/getCompany/{id}")
+    @GetMapping("/getcompany/{id}")
     public ResponseEntity<Company> getCompanyById(@PathVariable("id") int companyId) {
         Optional<Company> company = companyService.getCompanyById(companyId);
 
